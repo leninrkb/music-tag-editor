@@ -10,13 +10,16 @@
                     <td>Genre</td>
                 </tr>
             </thead>
-            <tbody>
-                <tr v-for="item in datos" :key="item">
+            <tbody v-for="item in datos" :key="item">
+                <tr >
                     <td><img :src="item.cover" alt=""></td>
-                    <td>{{item.title}}</td>
-                    <td>{{item.artist}}</td>
-                    <td>{{item.album}}</td>
-                    <td>{{item.genre}}</td>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.artist }}</td>
+                    <td>{{ item.album }}</td>
+                    <td>{{ item.genre }}</td>
+                </tr>
+                <tr>
+                    <td><a :href="item.cover" :download="item.artist">downolad cover</a></td>
                 </tr>
             </tbody>
         </table>

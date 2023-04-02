@@ -2,7 +2,6 @@
     <nav class="container-fluid">
         <ul>
             <li><strong>Music TagEditor</strong></li>
-            <li><button class="contrast switcher theme-switcher">Theme</button></li>
         </ul>
         <ul>
             <li><router-link to="/">my list</router-link></li>

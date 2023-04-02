@@ -31,6 +31,7 @@ export default {
     methods: {
         procesar_evento(event) {
             const media = require('../jsmediatags');
+            console.log(event);
             let cancion = event.target.files[0];
             const aux_reference = this;
             media.read(cancion, {
@@ -74,17 +75,19 @@ export default {
             //obtengo su formato
             let format_ = p.format;
 
+            //generamos la cadena de base64 con el formato recuperado
+            let base64img = `data:${format_};base64,${window.btoa(this.s2base64(data_))}`;
+            return base64img;
+        },
+        s2base64(data_) {
             //dado que el vector puede ser muy grande y podemos obtener un error 
             //de pila, recorremos la data_ y transformamos cada valor y lo agregamos
             let base64string = '';
             for (let index = 0; index < data_.length; index++) {
                 base64string += String.fromCharCode(data_[index]);
-                
-            }
 
-            //generamos la cadena de base64 con el formato recuperado
-            let base64img = `data:${format_};base64,${window.btoa(base64string)}`;
-            return base64img;
+            }
+            return base64string;
         }
     },
 }
