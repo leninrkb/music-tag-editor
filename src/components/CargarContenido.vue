@@ -25,13 +25,13 @@ export default {
             mostrar_tabla: false,
             datos: [],
             metadata: {},
-            sin_cover: require('../assets/noimg.svg')
+            sin_cover: require('../assets/noimg.png')
         }
     },
     methods: {
         procesar_evento(event) {
             const media = require('../jsmediatags');
-            console.log(event);
+            console.log(event.target.files[0]);
             let cancion = event.target.files[0];
             const aux_reference = this;
             media.read(cancion, {
