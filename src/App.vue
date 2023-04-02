@@ -9,7 +9,7 @@
 import NavbarHeader from './components/NavbarHeader.vue'
 export default {
   name: "App",
-  components:{
+  components: {
     NavbarHeader
   }
 };

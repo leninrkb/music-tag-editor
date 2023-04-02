@@ -24,7 +24,8 @@ export default {
             cancion: '',
             mostrar_tabla: false,
             datos: [],
-            metadata: {}
+            metadata: {},
+            sin_cover: require('../assets/noimg.svg')
         }
     },
     methods: {
@@ -43,6 +44,7 @@ export default {
                     };
                     aux_reference.datos[0] = aux_reference.metadata;
                     aux_reference.mostrar_tabla = true;
+
                 },
                 onError: function (error) {
                     aux_reference.mostrar_tabla = false;
@@ -64,13 +66,25 @@ export default {
         },
         valido_cover(p) {
             if (p === null || p === undefined) {
-                return require('../assets/noimg.svg');
+                return this.sin_cover;
             }
-            let data = p.data;
-            let format = p.format;
-            data = `data:${format};base64,${window.btoa(String.fromCharCode.apply(null, data))}`;
-            return data;
+            //obtengo el vector que representa la img 
+            let data_ = p.data;
 
+            //obtengo su formato
+            let format_ = p.format;
+
+            //dado que el vector puede ser muy grande y podemos obtener un error 
+            //de pila, recorremos la data_ y transformamos cada valor y lo agregamos
+            let base64string = '';
+            for (let index = 0; index < data_.length; index++) {
+                base64string += String.fromCharCode(data_[index]);
+                
+            }
+
+            //generamos la cadena de base64 con el formato recuperado
+            let base64img = `data:${format_};base64,${window.btoa(base64string)}`;
+            return base64img;
         }
     },
 }
