@@ -3,7 +3,7 @@
         <div>
             <h2>Upload song</h2>
             <input type="file" :accept="formatos" @change="procesar_evento">
-            <ListaCanciones v-if="mostrar_tabla" :datos="datos"></ListaCanciones>
+            <ListaCanciones v-if="mostrar_tabla"></ListaCanciones>
         </div>
         <div>
             <h2>Read directory</h2>
@@ -13,6 +13,7 @@
 <script>
 import { formatos_admitidos } from '../Datos';
 import ListaCanciones from '../components/ListaCanciones.vue';
+import {canciones} from '../DatosCanciones';
 export default {
     name: 'CargarContenido',
     components: {
@@ -21,29 +22,28 @@ export default {
     data() {
         return {
             formatos: formatos_admitidos,
-            cancion: '',
             mostrar_tabla: false,
-            datos: [],
-            metadata: {},
-            sin_cover: require('../assets/noimg.png')
+            sin_cover: require('../assets/noimg.png'),
+            // cancion: '',
+            // datos: [],
+            // metadata: {},
         }
     },
     methods: {
         procesar_evento(event) {
             const media = require('../jsmediatags');
-            console.log(event.target.files[0]);
-            let cancion = event.target.files[0];
+            const cancion = event.target.files[0];
             const aux_reference = this;
             media.read(cancion, {
                 onSuccess: function (tag) {
-                    aux_reference.metadata = {
+                    canciones.push({
+                        file: aux_reference.asignar(cancion),
                         cover: aux_reference.valido_cover(tag.tags.picture),
                         title: aux_reference.valido(tag.tags.title),
                         artist: aux_reference.valido(tag.tags.artist),
                         album: aux_reference.valido(tag.tags.album),
                         genre: aux_reference.valido(tag.tags.genre),
-                    };
-                    aux_reference.datos[0] = aux_reference.metadata;
+                    });
                     aux_reference.mostrar_tabla = true;
 
                 },
@@ -64,6 +64,9 @@ export default {
                 return resp;
             }
             return val;
+        },
+        asignar(p){
+            return p;
         },
         valido_cover(p) {
             if (p === null || p === undefined) {
