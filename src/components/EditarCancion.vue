@@ -51,6 +51,7 @@ export default {
                 album: this.album == '' ? this.datos.album : this.album,
                 genre: this.genre == '' ? this.datos.genre : this.genre,
             };
+            /*File.write()*/
             this.$emit('editado', 'guardado');
         }
     },
