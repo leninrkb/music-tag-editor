@@ -31,19 +31,20 @@ export default {
     },
     methods: {
         procesar_evento(event) {
+            this.mostrar_tabla = false;
             const media = require('../jsmediatags');
             const cancion = event.target.files[0];
             const aux_reference = this;
             media.read(cancion, {
                 onSuccess: function (tag) {
-                    canciones.push({
+                    canciones[0] = {
                         file: aux_reference.asignar(cancion),
                         cover: aux_reference.valido_cover(tag.tags.picture),
                         title: aux_reference.valido(tag.tags.title),
                         artist: aux_reference.valido(tag.tags.artist),
                         album: aux_reference.valido(tag.tags.album),
                         genre: aux_reference.valido(tag.tags.genre),
-                    });
+                    };
                     aux_reference.mostrar_tabla = true;
 
                 },
