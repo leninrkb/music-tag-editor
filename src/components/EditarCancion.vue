@@ -43,7 +43,7 @@ export default {
             this.$emit('editado', 'cancelado');
         },
         guardar() {
-            /* eslint-disable */ 
+            /* eslint-disable */
             const jsmediatags = require('../jsmediatags');
             const nuevos = {
                 title: this.title == '' ? this.datos.title : this.title,
@@ -52,6 +52,15 @@ export default {
                 genre: this.genre == '' ? this.datos.genre : this.genre,
             };
             /*File.write()*/
+            jsmediatags.write(this.datos, nuevos, {
+                onSuccess: function () {
+                    console.log('Metadata modificada:', tag.tags);
+                    alert('Metadata modificada exitosamente!');
+                },
+                onError: function (error) {
+                    console.error('Error al escribir la metadata:', error);
+                }
+            });
             this.$emit('editado', 'guardado');
         }
     },

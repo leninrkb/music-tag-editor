@@ -2,6 +2,8 @@
     <div class="grid">
         <div>
             <h2>Upload song</h2>
+            <cite>For the moment, you can only read and download the media's cover... </cite>
+            <cite>More features comming soon!</cite>
             <input type="file" :accept="formatos" @change="procesar_evento">
             <ListaCanciones v-if="mostrar_tabla"></ListaCanciones>
         </div>
@@ -13,11 +15,16 @@
 <script>
 import { formatos_admitidos } from '../Datos';
 import ListaCanciones from '../components/ListaCanciones.vue';
-import {canciones} from '../DatosCanciones';
+import { canciones } from '../DatosCanciones';
 export default {
     name: 'CargarContenido',
     components: {
         ListaCanciones
+    },
+    mounted() {
+        if(canciones.length > 0){
+            this.mostrar_tabla = true;
+        }
     },
     data() {
         return {
@@ -32,19 +39,21 @@ export default {
     methods: {
         procesar_evento(event) {
             this.mostrar_tabla = false;
+            /* eslint-disable */
+            // var ffmetadata = require("ffmetadata");
             const media = require('../jsmediatags');
             const cancion = event.target.files[0];
             const aux_reference = this;
             media.read(cancion, {
                 onSuccess: function (tag) {
-                    canciones[0] = {
+                    canciones.unshift( {
                         file: aux_reference.asignar(cancion),
                         cover: aux_reference.valido_cover(tag.tags.picture),
                         title: aux_reference.valido(tag.tags.title),
                         artist: aux_reference.valido(tag.tags.artist),
                         album: aux_reference.valido(tag.tags.album),
                         genre: aux_reference.valido(tag.tags.genre),
-                    };
+                    });
                     aux_reference.mostrar_tabla = true;
 
                 },
@@ -57,7 +66,7 @@ export default {
         valido(p) {
             let resp = 'empty';
             if (p === null || p === undefined) {
-                return resp;
+                return resp; 
             }
             let val = p.toString().trim();
             let len = val.length;
@@ -66,7 +75,7 @@ export default {
             }
             return val;
         },
-        asignar(p){
+        asignar(p) {
             return p;
         },
         valido_cover(p) {
